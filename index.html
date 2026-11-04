@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fil"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PDES Live Scanner</title></head>
+<body style="font:16px system-ui,Arial,sans-serif;margin:0;background:#f4f6f8;color:#17202a">
+<div id="msg" style="padding:24px;text-align:center">⏳ Binubuksan ang Live Scanner…</div>
+<script>
+/* PDES Live Scanner (Padre Diaz ES) – loader.
+   Ang code ng scanner ay galing sa PDES Answer Sheet Scanner (Apps Script), naka-compress sa #c=.
+   Tumatakbo lang ito kapag ang SHA-256 ng code ay nasa listahan sa ibaba. */
+var OK=["1af563a4fdfe884237ee2ffcdeb697d97395e733c0b2cc09500808c2d64e631d"];
+function ub64(s){s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";var b=atob(s),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;}
+function hex(b){return Array.from(new Uint8Array(b)).map(function(x){return("0"+x.toString(16)).slice(-2);}).join("");}
+(async function(){var el=document.getElementById("msg");try{
+  var h=location.hash.slice(1),p={};h.split("&").forEach(function(kv){var i=kv.indexOf("=");if(i>0)p[kv.slice(0,i)]=kv.slice(i+1);});
+  if(!p.c||!p.x)throw new Error("Buksan ang Live Scan mula sa Scan tab ng PDES Answer Sheet Scanner.");
+  var buf=await new Response(new Blob([ub64(p.c)]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).arrayBuffer();
+  var d=hex(await crypto.subtle.digest("SHA-256",buf));
+  if(OK.indexOf(d)<0)throw new Error("Hindi pa naka-update ang Live Scanner para sa bersyong ito ng app (code "+d.slice(0,10)+"). Ipaalam sa School Head.");
+  history.replaceState(null,"","#x="+p.x);
+  var html=new TextDecoder().decode(buf);document.open();document.write(html);document.close();
+}catch(e){el.textContent="⚠ "+e.message;}})();
+</script>
+</body></html>
