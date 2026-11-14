@@ -7,7 +7,7 @@
 /* PDES Live Scanner (Padre Diaz ES) – loader.
    Ang code ng scanner ay galing sa PDES Answer Sheet Scanner (Apps Script), naka-compress sa #c=.
    Tumatakbo lang ito kapag ang SHA-256 ng code ay nasa listahan sa ibaba. */
-var OK=["1af563a4fdfe884237ee2ffcdeb697d97395e733c0b2cc09500808c2d64e631d"];
+var OK=["1af563a4fdfe884237ee2ffcdeb697d97395e733c0b2cc09500808c2d64e631d","96eef875f88ca7e0c9755eac7275b1eb354f437f1bcb6965856e993d0156e954"];
 function ub64(s){s=s.replace(/-/g,"+").replace(/_/g,"/");while(s.length%4)s+="=";var b=atob(s),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u;}
 function hex(b){return Array.from(new Uint8Array(b)).map(function(x){return("0"+x.toString(16)).slice(-2);}).join("");}
 (async function(){var el=document.getElementById("msg");try{
